@@ -2,7 +2,7 @@
 
 VE-Display is an iOS and Apple CarPlay app for monitoring Victron Energy devices through Bluetooth Low Energy advertisement packets.
 
-The app reads Victron BLE Instant Readout data locally on the iPhone, decodes the encrypted manufacturer data, and presents the most relevant electrical values on both the phone and the vehicle CarPlay screen.
+The app reads Victron BLE Instant Readout data locally on the iPhone, decodes the encrypted manufacturer data, and presents the most relevant electrical values on the phone. On Apple CarPlay, VE-Display uses a low-distraction device list: select a device and the app announces its key values through text-to-speech.
 
 > This project is independent and is not affiliated with, endorsed by, or sponsored by Victron Energy.
 
@@ -15,8 +15,9 @@ The app reads Victron BLE Instant Readout data locally on the iPhone, decodes th
 - Manual start/stop scan control.
 - Configurable advertisement keys from the iPhone app.
 - Device list with automatic removal of stale BLE devices.
-- Apple CarPlay list view for discovered devices.
-- Apple CarPlay detail view with live values refreshed at 1 Hz while iOS allows BLE updates.
+- Apple CarPlay list view with large device names and device-type icons.
+- Apple CarPlay voice announcements when a device is selected.
+- CarPlay speech routed through the vehicle audio system when available.
 - iPhone portrait-only interface.
 - Launch splash screen and About screen using the VE-Display app icon.
 
@@ -29,7 +30,7 @@ The current implementation supports the Victron Instant Readout record families 
 | SmartSolar | Victron SmartSolar MPPT 75/15 | State, charger error, battery voltage, battery current, yield today, PV power, load current |
 | SmartShunt | Victron SmartShunt 500A/50mV | Battery voltage, battery current, state of charge, consumed Ah, time-to-go, alarm reason, auxiliary input |
 | Smart Battery Sense | Victron Smart Battery Sense | Battery voltage, temperature/auxiliary value when advertised |
-| Orion XS | Victron Orion XS 12/12-50A | State, charger error, input voltage, output voltage, input current, estimated output current, off reason |
+| Orion XS | Victron Orion XS 12/12-50A | State, charger error, input voltage, output voltage, input current, off reason |
 | AC Charger / Smart Charger | Victron Smart IP43 / Smart Charger BLE Instant Readout record | State, charger error, battery voltage, charger current |
 
 The parser also recognizes Victron record type metadata for other Instant Readout families, but the app only displays fields that are currently decoded with confidence. Unknown or not-yet-mapped records are intentionally not converted into guessed values.
@@ -37,7 +38,7 @@ The parser also recognizes Victron record type metadata for other Instant Readou
 ## Important Notes About Values
 
 - Smart Charger current may differ from the rounded value shown in VictronConnect. VE-Display displays the value decoded from the BLE Instant Readout packet.
-- Orion XS output current is currently estimated from input voltage, input current, and output voltage because the observed Orion XS BLE payload exposes input current reliably but does not expose a separate documented output-current field in the same way.
+- Orion XS output current is not currently shown because the observed Orion XS BLE payload exposes input current reliably but does not expose a separate confirmed output-current field in the same way.
 - BLE scanning in the background is limited by iOS. When the iPhone screen is off, iOS may suspend or reduce BLE scanning even if CarPlay is active.
 
 ## How It Works
@@ -114,9 +115,20 @@ The app stores configured keys locally in app preferences. Keys are not transmit
 2. Connect the iPhone to CarPlay.
 3. Open VE-Display from the CarPlay launcher.
 4. Select a discovered Victron device from the CarPlay list.
-5. The detail screen shows the decoded values for that device.
+5. VE-Display announces the selected device values through text-to-speech.
+6. Select the same device again to repeat the announcement.
 
-The CarPlay UI is intentionally compact and focused on glanceable values. RSSI/debug values are not shown.
+The CarPlay UI is intentionally compact and low-distraction: large device names, small device-type icons, no RSSI values and no debug clutter. The complete visual value list remains available on the iPhone.
+
+Current CarPlay voice announcements include:
+
+| Device | Announced values |
+| --- | --- |
+| SmartShunt | Battery voltage, current, state of charge, consumed Ah, time-to-go |
+| SmartSolar | Battery voltage, solar power, charge current, state |
+| Orion XS | Input voltage, output voltage, input current, state |
+| Smart Battery Sense | Battery voltage, temperature |
+| Smart Charger | Battery voltage, charge current, state |
 
 ## Privacy
 
@@ -131,7 +143,7 @@ VE-Display decodes BLE advertisement packets locally on the iPhone.
 ## Known Limitations
 
 - iOS may suspend BLE scanning when the iPhone screen is off.
-- Orion XS output current is estimated, not decoded from a confirmed dedicated output-current field.
+- Orion XS output current is not decoded from a confirmed dedicated output-current field.
 - Only the devices listed above have been verified with real logs so far.
 - Additional Victron devices may work if they use already-supported Instant Readout record types, but they should be validated with real BLE logs before being listed as supported.
 
