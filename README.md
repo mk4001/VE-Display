@@ -128,18 +128,6 @@ VE-Display decodes BLE advertisement packets locally on the iPhone.
 - No external API calls.
 - Advertisement keys remain local to the app preferences.
 
-## Development
-
-Open the project in Xcode:
-
-```sh
-open VictronBLETest.xcodeproj
-```
-
-Build the `VictronBLETest` scheme for a real iPhone target.
-
-The project includes parser unit tests in `VictronBLETestTests`. The parser is separated from CoreBluetooth so the packet decoding logic can be tested without BLE hardware.
-
 ## Known Limitations
 
 - iOS may suspend BLE scanning when the iPhone screen is off.
