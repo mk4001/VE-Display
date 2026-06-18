@@ -2,6 +2,8 @@
 
 VE-Display is an iOS and Apple CarPlay app for monitoring Victron Energy devices through Bluetooth Low Energy advertisement packets.
 
+https://apps.apple.com/it/app/ve-display/id6781215472?l=en-GB
+
 The app reads Victron BLE Instant Readout data locally on the iPhone, decodes the encrypted manufacturer data, and presents the most relevant electrical values on the phone. On Apple CarPlay, VE-Display uses a low-distraction device list: select a device and the app announces its key values through text-to-speech.
 
 > This project is independent and is not affiliated with, endorsed by, or sponsored by Victron Energy.
